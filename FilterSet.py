@@ -3,7 +3,7 @@ import torch
 import torch.fft 
 
 
-class FilterSet:
+class Filter_Set:
     
     def __init__(self, M, N, J=None, L=4):
         
