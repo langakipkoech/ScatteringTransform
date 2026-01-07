@@ -40,7 +40,7 @@ class ScatteringTransform:
         :param x: Input signal of shape (M, N) or (batch, M, N)
         :returns: Dictionary with 'S0', 'S1', and optionally 'S2' coefficients
         '''
-        # Handle batched input
+      
         if x.dim() == 2:
             x = x.unsqueeze(0)
             squeeze_output = True 
@@ -60,11 +60,11 @@ class ScatteringTransform:
         S1 = []
         S2 = []
         
-        # Zeroth order: S0 = |x * phi|
+        # Zeroth order:
         S0_coefficients = self._lowpass(x_fft)
         S0.append(S0_coefficients)
         
-        # First order: S1 = ||x * psi[j1,l1]| * phi|
+        # First order:
         U1_list = []  # Store for second order
         
         for j1 in range(self.J):
@@ -177,7 +177,7 @@ class ScatteringTransform:
                     coeff = coeff.flatten(start_dim=-2)
                 coeffs.append(coeff)
         
-        # Concatenate all coefficients
+        # Concatenate a
         all_coeffs = torch.cat(coeffs, dim=-1)
         
         return all_coeffs
