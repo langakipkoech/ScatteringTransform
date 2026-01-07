@@ -1,7 +1,7 @@
 import unittest
 import torch 
 import numpy as np 
-from FilterSet import *
+from FilterSet import Filter_Set
 
 class TestFilterSet(unittest.TestCase):
     
