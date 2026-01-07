@@ -199,7 +199,20 @@ if __name__ == '__main__':
     print(f"S1 shape: {result['S1'].shape}")
     if 'S2' in result:
         print(f"S2 shape: {result['S2'].shape}")
-    
+
+    #display sample coefficients
+    print("="*60)
+    print("SCATTERING TRANSFORM STATISTICS")
+    print("="*60)
+    print(f"S0 shape: {result['S0'].shape}")
+    print(f"S0 range: [{result['S0'].min():.3f}, {result['S0'].max():.3f}]")
+    print(f"S0 mean: {result['S0'].mean():.3f}, std: {result['S0'].std():.3f}")
+    print()
+    print(f"S1 shape: {result['S1'].shape}")
+    print(f"S1 range: [{result['S1'].min():.3f}, {result['S1'].max():.3f}]")
+    print(f"S1 mean: {result['S1'].mean():.3f}, std: {result['S1'].std():.3f}")
+   
+    print(f"S2 shape: {result['S2'].shape}")
     # Compute averaged coefficients
     coeffs = scat.compute_scattering_coefficients(x, average=True)
     print(f"\nScattering coefficient vector shape: {coeffs.shape}")
