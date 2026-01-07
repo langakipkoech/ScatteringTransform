@@ -53,6 +53,14 @@ class FilterSet:
         morlet_fft : ndarray size (M,N)
         '''
         
+        wav = self.gabor_2d(M, N, sigma, theta, xi, slant, offset, fft_shift)
+        wv_modulus = self.gabor_2d(M, N, sigma, theta, 0, slant, offset, fft_shift)
+        
+        K = wav.sum() / wv_modulus.sum()
+        morlet = wav - K * wv_modulus 
+        return morlet
+        
+        
     #gabor 2d
     def gabor_2d(self, M, N, sigma, theta, xi, slant=1.0, offset=0, fft_shift=False):
         '''
@@ -102,5 +110,7 @@ class FilterSet:
             gab = np.fft.fftshift(gab, axes=(0,1))
             
         return gab
+    
+    
                 
                 

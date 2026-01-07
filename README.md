@@ -31,4 +31,4 @@ The Scattering Transform architecture consists of multiple layers of wavelet con
 
 The diagram below illustrates the architecture of a Scattering Transform
 
-![Scattering Transform Architecture](scattering_transform_architecture.png)
+![Scattering Transform Architecture](/home/lang_es/Schreibtisch/ScatNet/scattering_transform_architecture.png)
