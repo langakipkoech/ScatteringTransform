@@ -19,7 +19,7 @@ class Filter_Set:
         precision="single", l_oversampling=1, frequency_factor=1
     ):
         
-        # Set data types
+    
         if precision == "single":
             dtype = torch.float32
             cdtype = torch.complex64
@@ -34,7 +34,7 @@ class Filter_Set:
         else:
             raise ValueError(f"precision must be 'single' or 'double', got {precision}")
             
-        # Initialize wavelet array (complex-valued in Fourier domain)
+        # Initialize wavelet array 
         psi = torch.zeros((self.J, self.L, self.M, self.N), dtype=cdtype)
         
         for j in range(self.J):
@@ -42,7 +42,7 @@ class Filter_Set:
                 # Radial frequency factor
                 k0 = frequency_factor * 3.0 / 4.0 * np.pi / 2 ** j
                 
-                # FIXED: Orientation angle should depend on l
+                # Orientation angle should depend on l
                 theta0 = l * np.pi / self.L
                 
                 if wavelets == "morlet":
@@ -58,26 +58,26 @@ class Filter_Set:
                 # Remove DC component
                 wavelet_fourier[0, 0] = 0
                 
-                # FIXED: Store complex values, not just real part
+                #
                 psi[j, l] = torch.from_numpy(wavelet_fourier.astype(cdtype_np))
         
         # Generate lowpass filter (scaling function)
         if wavelets == "morlet":
-            # FIXED: Use self.J explicitly instead of loop variable j
+            
             phi_spatial = self.gabor_2d(
                 M=self.M, N=self.N, 
                 sigma=0.8 * 2 ** self.J / frequency_factor, 
                 theta=0, 
                 xi=0
             )
-            # FIXED: Store complex values
+
             phi = torch.from_numpy(phi_spatial.astype(cdtype_np)) * (self.M * self.N) ** 0.5
         else:
             raise ValueError(f"Wavelet type '{wavelets}' not implemented")
             
         filters_set = {'psi': psi, 'phi': phi}
         
-        # Optional: save filters if requested
+        
         if if_save and save_dir is not None:
             import os
             os.makedirs(save_dir, exist_ok=True)

@@ -80,16 +80,16 @@ class ScatteringTransform:
                 S1_coeff = self._lowpass(U1_mod_fft)
                 S1.append(S1_coeff)
                 
-                # Store for second order (only if needed)
+                # Store for second 
                 if self.order >= 2:
                     U1_list.append((U1_mod_fft, j1, l1))
         
-        # Second order: S2 = |||x * psi[j1,l1]| * psi[j2,l2]| * phi|
+        # Second order:
         if self.order >= 2:
-            for u1_mod_fft, j1, l1 in U1_list:  # FIXED: unpacked variable name
-                for j2 in range(j1 + 1, self.J):  # j2 > j1 for scale separation
+            for u1_mod_fft, j1, l1 in U1_list:  
+                for j2 in range(j1 + 1, self.J):  
                     for l2 in range(self.L):
-                        # FIXED: Use correct variable u1_mod_fft (not U1_mod_fft)
+                        
                         U2 = self._wavelet_transform(u1_mod_fft, j2, l2)
                         
                         # Apply modulus
@@ -106,11 +106,11 @@ class ScatteringTransform:
             'S1': torch.stack(S1, dim=1),  # (batch, J*L, M, N)
         }
         
-        # Only add S2 if it exists
+        
         if S2:
             result['S2'] = torch.stack(S2, dim=1)  # (batch, n_pairs, M, N)
         
-        # FIXED: Actually use squeeze_output
+        
         if squeeze_output:
             result = {k: v.squeeze(0) for k, v in result.items()}
         
@@ -125,11 +125,11 @@ class ScatteringTransform:
         '''
         phi = self.filters['phi'].to(x_fft.device)
         phi_complex = phi.to(self.cdtype)
-        
-        # Multiply in Fourier domain (convolution in spatial domain)
+    
+        # Multiply in Fourier domain
         y_fft = x_fft * phi_complex
         
-        # Inverse FFT and take real part
+        # Inverse FFT 
         y = fft.ifft2(y_fft).real 
         
         return y
@@ -147,7 +147,7 @@ class ScatteringTransform:
         psi = self.filters['psi'][j, l].to(x_fft.device)
         psi_complex = psi.to(self.cdtype)
         
-        # Multiply in Fourier domain (convolution in spatial domain)
+        # Multiply in Fourier domain 
         y_fft = x_fft * psi_complex
         
         # Inverse FFT
