@@ -34,6 +34,23 @@ class FilterSet:
                 k0 = frequency_factor * 3.0 / 4.0 * np.pi / 2 ** j 
                 theta0 = (int(self.L - self.L/2) -1) * np.pi / self.L 
                 
+                if wavelets == "morlet":
+                    wavelet_spatial = self.morlet_2d(M = self.M, N=self.N, sigma= 0.8 * 2 ** j / frequency_factor, theta=theta0, xi=k0, 
+                                                    slant=4.0 / self.L * l_oversampling)
+                    wavelet_fourier = np.fft.fft2(wavelet_spatial)
+                wavelet_fourier[0,0] = 0
+                psi[j,l] = torch.from_numpy(wavelet_fourier.real.astype(dtype_np))
+                
+        if wavelets == "morlet":
+            phi = torch.from_numpy(self.gabor_2d(M=self.M, N = self.N, sigma=0.8 * 2 ** j / frequency_factor, theta= 0, xi=0).real.astype(dtype_np)) * (self.M * self.N)**0.5
+            
+        filters_set = {'psi':psi, 'phi':phi}
+        
+        return filters_set
+            
+            
+            
+                
     #morlet 2d           
     def morlet_2d(self, M, N, sigma, theta, xi, slant = 0.5, offset = 0, fft_shift = False):
         '''
